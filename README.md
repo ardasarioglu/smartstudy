@@ -1,4 +1,5 @@
 SmartStudy
+
 Proje Tanımı
 
 SmartStudy, kullanıcıların ders notlarını daha verimli şekilde çalışabilmesi için geliştirilmiş Flutter tabanlı mobil uygulamadır. Uygulama sayesinde kullanıcılar fotoğraflardan metin çıkarabilir, yapay zeka ile özet oluşturabilir ve flashcard üretebilir.
