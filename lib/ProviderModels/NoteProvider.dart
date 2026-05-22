@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:smartstudy/Models/FlashCard.dart';
 import 'package:smartstudy/Models/Note.dart';
+import 'package:smartstudy/Models/NotePhoto.dart';
 import 'package:smartstudy/Services/AIService.dart';
 import 'package:smartstudy/Services/DatabaseService.dart';
 import 'package:smartstudy/Services/FileService.dart';
@@ -79,6 +83,57 @@ class NoteProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> saveNoteAndGenerateCards({
+    required String title,
+    required String originalText,
+    required List<XFile> tempPhotos,
+  }) async {
+    _setLoading(true);
+    _setError(null);
 
+    try {
+      String summary = await _aiService.generateSummary(originalText);
+
+
+      Note note = Note(
+          title: title,
+          originalText: originalText,
+          createdAt: DateTime.now(),
+          summaryText: summary
+      );
+
+      int noteId = await _dbService.insertNote(note);
+
+      if(tempPhotos.isNotEmpty) {
+        List<Notephoto> photoModels = [];
+        for (XFile tempFile in tempPhotos){
+          String permanentPath = await FileService.saveImageToLocalStorage(tempFile);
+          photoModels.add(Notephoto(noteId: noteId, imagePath: permanentPath));
+        }
+        await _dbService.insertNotePhoto(photoModels);
+      }
+      String aiResponse = await _aiService.generateFlashCards(originalText);
+      if (aiResponse.isNotEmpty){
+        String cleanJson = aiResponse.replaceAll('```json', '').replaceAll('```', '').trim();
+        try {
+          List<dynamic> jsonList = jsonDecode(cleanJson);
+          for (var item in jsonList) {
+            Flashcard flashcard = Flashcard(noteId: noteId, question: item["question"] ?? "Soru anlaşılamadı", answer: item["answer"] ?? "Cevap anlaşılamadı");
+            await _dbService.insertFlashCard(flashcard);
+          }
+        } catch (jsonError) {
+          logger.w("Yapay zeka JSON formatını bozdu $jsonError");
+        }
+      }
+      await loadNotes();
+      return true;
+    } catch (e, stackTrace) {
+      _setError("Not kaydedilirken beklenmedik bir hata oluştu.");
+      logger.e("saveNoteAndGenerateCards hatası", error: e, stackTrace: stackTrace);
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
 
 }
