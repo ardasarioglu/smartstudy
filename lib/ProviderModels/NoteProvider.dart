@@ -136,4 +136,32 @@ class NoteProvider extends ChangeNotifier {
     }
   }
 
+  Future<List<Flashcard>> fetchFlashcardsForNote(int noteId) async {
+    try {
+      return await _dbService.getFlashCards(noteId);
+    } catch (e) {
+      logger.e("Flashcard çekme hatası", error: e);
+      return [];
+    }
+  }
+
+  Future<List<Notephoto>> fetchNotephotosForNote(int noteId) async {
+    try {
+      return await _dbService.getNotePhotos(noteId);
+    } catch (e) {
+      logger.e("Notephotos çekme hatası", error: e);
+      return [];
+    }
+  }
+
+  Future<void> editFlashcard(int cardId, String newQuestion, String newAnswer) async {
+    try {
+      await _dbService.updateFlashCard(cardId, newQuestion, newAnswer);
+      notifyListeners();
+    } catch (e) {
+      logger.e("Flashcard güncellenemedi", error: e);
+    }
+  }
+
+
 }
