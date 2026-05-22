@@ -1,28 +1,50 @@
-# [cite_start]SmartStudy Projesi [cite: 35]
+SmartStudy
+Proje Tanımı
 
-## [cite_start]Proje Tanımı [cite: 36]
-Bu proje, öğrencilerin... (Buraya SmartStudy'nin ne olduğunu ve hangi problemi çözdüğünü eklemeliyiz).
+SmartStudy, kullanıcıların ders notlarını daha verimli şekilde çalışabilmesi için geliştirilmiş Flutter tabanlı mobil uygulamadır. Uygulama sayesinde kullanıcılar fotoğraflardan metin çıkarabilir, yapay zeka ile özet oluşturabilir ve flashcard üretebilir.
 
-## [cite_start]Özellikler [cite: 37]
-* Özellik 1
-* Özellik 2
+Özellikler
+OCR ile görselden metin çıkarma
+Yapay zeka ile özet oluşturma
+Flashcard üretimi
+SQLite veritabanı desteği
+Not yönetimi
+Görsel seçme ve kayıt işlemleri
+Kullanılan Teknolojiler
 
-## [cite_start]Kullanılan Teknolojiler [cite: 38]
-* **Backend:** (Örn: Node.js, Spring Boot)
-* **Frontend:** (Örn: React, Flutter)
-* **Veritabanı:** (Örn: PostgreSQL, MongoDB)
+Frontend:
 
-## [cite_start]Kurulum Adımları [cite: 39]
-Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyin:
-1. Repoyu klonlayın: `git clone <repo-url>`
-2. Bağımlılıkları yükleyin: `npm install` (veya ilgili komut)
-3. Uygulamayı başlatın: `npm start` (veya ilgili komut)
+Flutter
+Dart
 
-## [cite_start]Kullanım [cite: 40]
-(Uygulama ayağa kalktıktan sonra nasıl kullanılacağına dair kısa bilgiler.)
+Backend / Servisler:
 
-## [cite_start]Katkı (Contribution) [cite: 41]
-Pull request'ler kabul edilmektedir. Büyük değişiklikler için lütfen önce neyi değiştirmek istediğinizi tartışmak üzere bir issue açın.
+Firebase AI
+Google ML Kit
 
-## [cite_start]Lisans [cite: 42]
-Bu proje MIT Lisansı ile lisanslanmıştır.
+Veritabanı:
+
+SQLite (sqflite)
+
+State Management:
+
+Provider
+Kurulum Adımları
+Projeyi GitHub üzerinden klonlayın.
+Flutter SDK kurulumunu tamamlayın.
+flutter pub get komutunu çalıştırın.
+Firebase ayarlarını yapılandırın.
+Uygulamayı emulator veya fiziksel cihazda çalıştırın.
+Kullanım
+
+Kullanıcı uygulama üzerinden görsel seçebilir. Seçilen görseller OCR işleminden geçirilir ve elde edilen metin yapay zeka yardımıyla özetlenebilir veya flashcard oluşturulabilir.
+
+Katkı
+
+Projeye katkı sağlamak isteyen kullanıcılar pull request gönderebilir.
+
+Lisans
+
+Bu proje eğitim amaçlı geliştirilmiştir.
+
+GitHub bağlantısı: https://github.com/ardasarioglu/smartstudy
