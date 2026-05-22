@@ -47,7 +47,7 @@ class NoteProvider extends ChangeNotifier {
       notifyListeners();
     } catch (e, stackTrace) {
       _setError("Notlar yüklenirken bir hata oluştu");
-      logger.e("leadNotes hatası", error: e, stackTrace: stackTrace);
+      logger.e("loadNotes hatası", error: e, stackTrace: stackTrace);
     } finally {
       _setLoading(false);
     }
@@ -163,5 +163,46 @@ class NoteProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> editNote(int noteId, String newTitle, String newOriginalText, String? newSummary) async {
+    _setLoading(true);
+    try {
+      await _dbService.updateNote(noteId, newTitle, newSummary, newOriginalText);
+      await loadNotes();
+    } catch (e) {
+      _setError("Not güncellenemedi");
+      logger.e("Edit Note hatası", error: e);
+    } finally {
+      _setLoading(false);
+    }
+  }
 
+  Future<void> deleteFlashcard(int cardId) async {
+    try {
+      await _dbService.deleteFlashCard(cardId);
+      notifyListeners();
+    } catch (e) {
+      _setError("Flashcard silinemedi");
+      logger.e("Flashcard silme hatası", error: e);
+    }
+  }
+
+  Future<void> addManualFlashCard(int noteId, String question, String answer) async {
+    try {
+      Flashcard flashcard = Flashcard(noteId: noteId, question: question, answer: answer);
+      await _dbService.insertFlashCard(flashcard);
+      notifyListeners();
+    } catch (e) {
+      _setError("Manuel flashcard ekleme hatası");
+      logger.e("Flashcard eklenirken hata meydana geldi", error: e);
+    }
+  }
+
+  Future<void> deleteSpecificPhoto(int photoId) async {
+    try {
+      await _dbService.deleteNotePhoto(photoId);
+      notifyListeners();
+    } catch (e) {
+      logger.e("Fotoğraf silinemedi", error: e);
+    }
+  }
 }
