@@ -1,17 +1,51 @@
-# smartstudy
+SmartStudy
 
-A new Flutter project.
+Proje Tanımı
 
-## Getting Started
+SmartStudy, kullanıcıların ders notlarını daha verimli şekilde çalışabilmesi için geliştirilmiş Flutter tabanlı mobil uygulamadır. Uygulama sayesinde kullanıcılar fotoğraflardan metin çıkarabilir, yapay zeka ile özet oluşturabilir ve flashcard üretebilir.
 
-This project is a starting point for a Flutter application.
+Özellikler
+OCR ile görselden metin çıkarma
+Yapay zeka ile özet oluşturma
+Flashcard üretimi
+SQLite veritabanı desteği
+Not yönetimi
+Görsel seçme ve kayıt işlemleri
+Kullanılan Teknolojiler
 
-A few resources to get you started if this is your first Flutter project:
+Frontend:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Flutter
+Dart
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Backend / Servisler:
+
+Firebase AI
+Google ML Kit
+
+Veritabanı:
+
+SQLite (sqflite)
+
+State Management:
+
+Provider
+Kurulum Adımları
+Projeyi GitHub üzerinden klonlayın.
+Flutter SDK kurulumunu tamamlayın.
+flutter pub get komutunu çalıştırın.
+Firebase ayarlarını yapılandırın.
+Uygulamayı emulator veya fiziksel cihazda çalıştırın.
+Kullanım
+
+Kullanıcı uygulama üzerinden görsel seçebilir. Seçilen görseller OCR işleminden geçirilir ve elde edilen metin yapay zeka yardımıyla özetlenebilir veya flashcard oluşturulabilir.
+
+Katkı
+
+Projeye katkı sağlamak isteyen kullanıcılar pull request gönderebilir.
+
+Lisans
+
+Bu proje eğitim amaçlı geliştirilmiştir.
+
+GitHub bağlantısı: https://github.com/ardasarioglu/smartstudy
