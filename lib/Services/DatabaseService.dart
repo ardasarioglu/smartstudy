@@ -68,7 +68,7 @@ class DatabaseService {
   Future<int> deleteNote(int id) async {
     final db = await database;
 
-    List<Notephoto> photos = await getNotePhotos(id);
+    List<NotePhoto> photos = await getNotePhotos(id);
 
     for(var photo in photos){
       String path = photo.imagePath;
@@ -87,7 +87,7 @@ class DatabaseService {
     final db = await database;
     List<Map<String, dynamic>> result = await db.query("NotePhotos", where: "id = ?", whereArgs: [id]);
 
-    List<Notephoto> photos = List.generate(result.length, (index) => Notephoto.fromMap(result[index]),);
+    List<NotePhoto> photos = List.generate(result.length, (index) => NotePhoto.fromMap(result[index]),);
 
     for (var photo in photos){
       await FileService.deleteImageFromLocalStorage(photo.imagePath);
@@ -108,7 +108,7 @@ class DatabaseService {
     return insertedFlashCardID;
   }
 
-  Future<void> insertNotePhoto(List<Notephoto> notePhotos) async {
+  Future<void> insertNotePhoto(List<NotePhoto> notePhotos) async {
     final db = await database;
     Batch batch = db.batch();
     for(var notePhoto in notePhotos){
@@ -137,10 +137,10 @@ class DatabaseService {
     await db.update("Notes", {"title": newTitle, "summary_text": newSummaryText, "original_text": newOriginalText}, where: "id = ?", whereArgs: [id]);
   }
 
-  Future<List<Notephoto>> getNotePhotos(int id) async {
+  Future<List<NotePhoto>> getNotePhotos(int id) async {
     final db = await database;
     var result = await db.query("NotePhotos", where: "note_id = ?", whereArgs: [id]);
-    return List.generate(result.length, (index) => Notephoto.fromMap(result[index]),);
+    return List.generate(result.length, (index) => NotePhoto.fromMap(result[index]),);
   }
 
   Future<List<Flashcard>> getFlashCards(int id) async {

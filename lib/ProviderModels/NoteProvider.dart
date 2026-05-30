@@ -87,12 +87,19 @@ class NoteProvider extends ChangeNotifier {
     required String title,
     required String originalText,
     required List<XFile> tempPhotos,
+    String? summaryText
   }) async {
     _setLoading(true);
     _setError(null);
 
     try {
-      String summary = await _aiService.generateSummary(originalText);
+      String summary;
+      if(summaryText != null){
+        summary = summaryText;
+      } else {
+        summary = await _aiService.generateSummary(originalText);
+      }
+
 
 
       Note note = Note(
@@ -105,10 +112,10 @@ class NoteProvider extends ChangeNotifier {
       int noteId = await _dbService.insertNote(note);
 
       if(tempPhotos.isNotEmpty) {
-        List<Notephoto> photoModels = [];
+        List<NotePhoto> photoModels = [];
         for (XFile tempFile in tempPhotos){
           String permanentPath = await FileService.saveImageToLocalStorage(tempFile);
-          photoModels.add(Notephoto(noteId: noteId, imagePath: permanentPath));
+          photoModels.add(NotePhoto(noteId: noteId, imagePath: permanentPath));
         }
         await _dbService.insertNotePhoto(photoModels);
       }
@@ -145,7 +152,7 @@ class NoteProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<Notephoto>> fetchNotephotosForNote(int noteId) async {
+  Future<List<NotePhoto>> fetchNotephotosForNote(int noteId) async {
     try {
       return await _dbService.getNotePhotos(noteId);
     } catch (e) {
@@ -163,10 +170,31 @@ class NoteProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> editNote(int noteId, String newTitle, String newOriginalText, String? newSummary) async {
+  Future<void> editNote(int noteId, String newTitle, String newOriginalText, String? newSummary, List<XFile> finalPhotos) async {
     _setLoading(true);
     try {
       await _dbService.updateNote(noteId, newTitle, newSummary, newOriginalText);
+
+      List<NotePhoto> existingPhotos = await _dbService.getNotePhotos(noteId);
+      List<String> finalPaths = finalPhotos.map((e) => e.path,).toList();
+      List<String> existingPaths = existingPhotos.map((e) => e.imagePath,).toList();
+
+      for (var oldPhoto in existingPhotos){
+        if(!finalPaths.contains(oldPhoto.imagePath)){
+          await _dbService.deleteNotePhoto(oldPhoto.id!);
+        }
+      }
+
+      List<NotePhoto> newPhotosToInsert = [];
+      for(var file in finalPhotos) {
+        if (!existingPaths.contains(file.path)) {
+          String permanentPath = await FileService.saveImageToLocalStorage(file);
+          newPhotosToInsert.add(NotePhoto(noteId: noteId, imagePath: permanentPath));
+        }
+      }
+      if (newPhotosToInsert.isNotEmpty) {
+        await _dbService.insertNotePhoto(newPhotosToInsert);
+      }
       await loadNotes();
     } catch (e) {
       _setError("Not güncellenemedi");

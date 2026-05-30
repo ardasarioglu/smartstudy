@@ -30,7 +30,7 @@ class AIService {
     }
   }
 
-  Future<String> sendMassageAndPhotos(String message, List<XFile> photos) async {
+  Future<String> sendMessageAndPhotos(String message, List<XFile> photos) async {
     if (message.trim().isEmpty && photos.isEmpty){
       print("Boş metin veya fotoğraf gönderilemez");
       return "";
@@ -48,7 +48,7 @@ class AIService {
       }
       final content = Content.multi(parts);
       final response = await model.generateContent([content]) ;
-      return response.text ?? "";
+      return response.text?.trim() ?? "";
     } catch (e, stackTrace) {
       logger.e("AIService sendMessageAndPhotos", error: e, stackTrace: stackTrace);
       return "";
@@ -56,7 +56,7 @@ class AIService {
   }
 
   Future<String> ocrWithAI(List<XFile> photos) async {
-    return await sendMassageAndPhotos("Bu fotoğraflardaki tüm metinleri tam olarak görüldüğü gibi, harfi harfine çıkar. Hiçbir ek açıklama, yorum, bağlam, özet, giriş veya çıkış cümlesi ekleme. Fotoğraftaki yazım veya noktalama hatalarını düzeltme. Sadece ve sadece fotoğrafta okuduğun metni çıktı olarak ver.", photos);
+    return await sendMessageAndPhotos("Bu fotoğraflardaki tüm metinleri tam olarak görüldüğü gibi, harfi harfine çıkar. Hiçbir ek açıklama, yorum, bağlam, özet, giriş veya çıkış cümlesi ekleme. Fotoğraftaki yazım veya noktalama hatalarını düzeltme. Sadece ve sadece fotoğrafta okuduğun metni çıktı olarak ver. Sadece metindeki alt satıra geçişleri düzelt. Eğer metinde yeni satıra geçmek için - kullanımı varsa o kelimeyi - olmadan bir bütün şeklinde ver. Eğer içerisinde yazı olmayan bir fotoğraf var ise onu yoksay", photos);
   }
 
   Future<String> generateFlashCards(String text) async {
