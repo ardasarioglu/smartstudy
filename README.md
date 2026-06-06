@@ -49,3 +49,5 @@ Lisans
 Bu proje eğitim amaçlı geliştirilmiştir.
 
 GitHub bağlantısı: https://github.com/ardasarioglu/smartstudy
+
+Tanıtım Video Linki: https://drive.google.com/file/d/1H5656w96wMaDBTLbUdFIRJr91kAHUbhm/view?usp=sharing
